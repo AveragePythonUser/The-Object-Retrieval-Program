@@ -49,8 +49,8 @@ public class Detection : MonoBehaviour
 
     private void holding_object()
     {
-        holding_transform.position = gameObject.transform.position + new Vector3(3, 0, 0);
-        //holding_transform.position = player_camera.transform.forward;
+        holding_transform.position = gameObject.transform.position + new Vector3(0, 0, 1);
+        holding_transform.position += orientation.forward;
     }
 
     private void select_check()
