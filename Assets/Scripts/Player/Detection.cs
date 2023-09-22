@@ -22,8 +22,10 @@ public class Detection : MonoBehaviour
     // Objects and Components
     private HUD_manager hud_manager;
     private Transform orientation;
+    private Transform hold_parent;
 
     private bool holding;
+    private bool hold_ready;
     private Transform holding_transform;
     
     // Start is called before the first frame update
@@ -31,10 +33,14 @@ public class Detection : MonoBehaviour
     {
         hud_manager = GameObject.Find("HUD").GetComponent<HUD_manager>();
         orientation = GameObject.Find("Orientation").GetComponent<Transform>();
+        hold_parent = GameObject.Find("Holding").GetComponent<Transform>();
+        holding = false;
+        hold_ready = true;
     }
 
     private void Update()
     {
+        check_binds();
         if (holding == true)
         {
             holding_object();
@@ -47,10 +53,28 @@ public class Detection : MonoBehaviour
         select_check();
     }
 
+    private void check_binds()
+    {
+        if ((Input.GetKey(Key_E) && holding == true) && hold_ready == false)
+        {
+            holding = false;
+            hold_ready = true;
+            holding_transform.SetParent(null);
+        }
+    }
+
+    private void hold_cooldown()
+    {
+        hold_ready = false;
+    }
+
     private void holding_object()
     {
-        holding_transform.position = gameObject.transform.position + new Vector3(0, 0, 1);
-        holding_transform.position += orientation.forward;
+        // follows player looking direction. gameobject parent there so the cube rotates
+        // around the player
+        holding_transform.SetParent(hold_parent, false);
+        hold_parent.position = orientation.position;
+        hold_parent.rotation = orientation.rotation;
     }
 
     private void select_check()
@@ -75,10 +99,11 @@ public class Detection : MonoBehaviour
 
     private void Selected(RaycastHit hit)
     {
-        if (Input.GetKey(Key_E))
+        if ((Input.GetKey(Key_E) && holding == false) && hold_ready == true)
         {
             holding = true;
             holding_transform = hit.transform;
+            Invoke("hold_cooldown", 0.5f);
         }
 
     }
