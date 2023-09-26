@@ -40,7 +40,7 @@ public class Detection : MonoBehaviour
 
     private void Update()
     {
-        check_binds();
+        //check_binds();
         if (holding == true)
         {
             holding_object();
@@ -55,11 +55,17 @@ public class Detection : MonoBehaviour
 
     private void check_binds()
     {
-        if ((Input.GetKey(Key_E) && holding == true) && hold_ready == false)
-        {
-            holding = false;
-            hold_ready = true;
-            holding_transform.SetParent(null);
+        Ray ray = new Ray(player_camera.position, player_camera.forward);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, select_distance) == false)
+        { 
+            if ((Input.GetKey(Key_E) && holding == true) && hold_ready == false)
+            {
+                holding = false;
+                hold_ready = true;
+                holding_transform.SetParent(null);
+            }
         }
     }
 
@@ -72,9 +78,10 @@ public class Detection : MonoBehaviour
     {
         // follows player looking direction. gameobject parent there so the cube rotates
         // around the player
-        holding_transform.SetParent(hold_parent, false);
         hold_parent.position = orientation.position;
         hold_parent.rotation = orientation.rotation;
+        //holding_transform.position = new Vector3(0, 0, 3);
+        //holding_transform.rotation = hold_parent.rotation;
     }
 
     private void select_check()
@@ -86,8 +93,8 @@ public class Detection : MonoBehaviour
         {
             if (hit.transform.gameObject.CompareTag("Selectable"))
             {
-                hud_manager.Press_E(true);
-                Selected(hit);
+                //hud_manager.Press_E(true);
+                //Selected(hit);
             }
         }
         else
@@ -103,6 +110,12 @@ public class Detection : MonoBehaviour
         {
             holding = true;
             holding_transform = hit.transform;
+            hold_parent.position = orientation.position;
+            hold_parent.rotation = orientation.rotation;
+            holding_transform.SetParent(hold_parent);
+            Debug.Log("before" + holding_transform.position);
+            //holding_transform.position = new Vector3(0, 0, 3);
+            Debug.Log("after" + holding_transform.position);
             Invoke("hold_cooldown", 0.5f);
         }
 
