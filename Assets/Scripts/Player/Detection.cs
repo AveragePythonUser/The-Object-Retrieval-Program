@@ -96,6 +96,10 @@ public class Detection : MonoBehaviour
                 //hud_manager.Press_E(true);
                 //Selected(hit);
             }
+            else if(hit.transform.gameObject.CompareTag("Computer"))
+            {
+                hud_manager.computer_initialize();
+            }
         }
         else
         {

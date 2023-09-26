@@ -7,10 +7,14 @@ using UnityEngine.UI;
 public class HUD_manager : MonoBehaviour
 {
     [SerializeField]
-    private GameObject E_panel; 
+    private GameObject E_panel;
+    private GameObject computer;
     // Start is called before the first frame update
     void Start()
     {
+        computer = GameObject.Find("Computer").GetComponent<GameObject>();
+        Debug.Log(computer);
+        turn_off_all();
         Press_E(false); 
     }
 
@@ -20,11 +24,21 @@ public class HUD_manager : MonoBehaviour
         
     }
 
+    private void turn_off_all()
+    {
+        computer.SetActive(false);
+    }
+
     public void Press_E(bool state)
     {
         if (state == true)
             E_panel.SetActive(true);
         else
             E_panel.SetActive(false);
+    }
+
+    public void computer_initialize()
+    {
+        computer.SetActive(true);
     }
 }

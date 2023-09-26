@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Door : MonoBehaviour
@@ -27,9 +28,9 @@ public class Door : MonoBehaviour
         }
         else
         {
-            slide_z = Mathf.SmoothDamp(door.position.z, 0f, ref vel, smooth_time);
+            slide_z = Mathf.SmoothDamp(door.position.z, gameObject.transform.position.z, ref vel, smooth_time);
         }
-        door.position = new Vector3(0, 0, slide_z);
+        door.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, slide_z);
     }
 
     public static void Open()

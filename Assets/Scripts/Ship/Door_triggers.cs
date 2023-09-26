@@ -5,6 +5,8 @@ using UnityEngine;
 public class Door_triggers : MonoBehaviour
 {
     private Door door;
+    [SerializeField]
+    private bool allow_open;
     // Start is called before the first frame update
     void Start()
     {
@@ -13,7 +15,7 @@ public class Door_triggers : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Player"))
+        if(other.CompareTag("Player") && allow_open == true)
         {
             Door.Open();
         }
