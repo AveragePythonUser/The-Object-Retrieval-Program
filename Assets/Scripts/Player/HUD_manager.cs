@@ -39,6 +39,15 @@ public class HUD_manager : MonoBehaviour
 
     public void computer_initialize()
     {
-        computer.SetActive(true);
+        computer.SetActive(true); 
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    public void computer_shutdown()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        computer.SetActive(false);
     }
 }
