@@ -8,11 +8,11 @@ public class HUD_manager : MonoBehaviour
 {
     [SerializeField]
     private GameObject E_panel;
+    [SerializeField]
     private GameObject computer;
     // Start is called before the first frame update
     void Start()
     {
-        computer = GameObject.Find("Computer").GetComponent<GameObject>();
         Debug.Log(computer);
         turn_off_all();
         Press_E(false); 

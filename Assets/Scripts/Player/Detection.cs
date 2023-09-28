@@ -98,7 +98,9 @@ public class Detection : MonoBehaviour
             }
             else if(hit.transform.gameObject.CompareTag("Computer"))
             {
-                hud_manager.computer_initialize();
+                hud_manager.Press_E(true);
+                if (Input.GetKey(Key_E))
+                    hud_manager.computer_initialize();
             }
         }
         else

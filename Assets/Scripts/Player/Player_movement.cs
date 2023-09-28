@@ -24,6 +24,7 @@ public class Player_movement : MonoBehaviour
 
     [Header("Keybinds")]
     public KeyCode jump_key = KeyCode.Space;
+    public KeyCode sprint_key = KeyCode.LeftShift;
 
     [Header("Ground Check")]
     public float player_height;
@@ -91,6 +92,13 @@ public class Player_movement : MonoBehaviour
 
             Invoke(nameof(Reset_jump), jump_cool_down);
         }
+
+        // sprint
+
+        if (Input.GetKeyDown(sprint_key))
+            move_speed = 8;
+        else if (Input.GetKeyUp(sprint_key))
+            move_speed = 5;
     }
 
     private void Move_player()
