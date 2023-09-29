@@ -8,6 +8,7 @@ public class Computer : MonoBehaviour
 {
     private HUD_manager manager;
     private GameObject exit;
+    [SerializeField]
     private GameObject Dot;
 
     // Start is called before the first frame update
@@ -15,7 +16,6 @@ public class Computer : MonoBehaviour
     {
         manager = GameObject.Find("HUD").GetComponent<HUD_manager>();
         exit = GameObject.Find("Exit Button");
-        Dot = GameObject.Find("Dot");
     }
 
     // Update is called once per frame
