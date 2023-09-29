@@ -10,6 +10,8 @@ public class Computer : MonoBehaviour
     private GameObject exit;
     [SerializeField]
     private GameObject Dot;
+    [SerializeField]
+    private GameObject Scanner;
 
     // Start is called before the first frame update
     void Start()
@@ -31,6 +33,20 @@ public class Computer : MonoBehaviour
 
     public void Radar_Up()
     {
-        Dot.transform.position += new Vector3(0, 1, 0);
+        Dot.transform.position += new Vector3(0, 6, 0);
+    }
+
+    public void Radar_Down() 
+    {
+        Dot.transform.position += new Vector3(0, -6, 0);
+    }
+
+    public void Scanner_Rotate_Right()
+    {
+        Scanner.transform.rotation *= Quaternion.Euler(0, 0, -3f);
+    }
+    public void Scanner_Rotate_Left()
+    {
+        Scanner.transform.rotation *= Quaternion.Euler(0, 0, 3f);
     }
 }
