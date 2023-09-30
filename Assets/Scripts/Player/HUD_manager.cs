@@ -10,10 +10,10 @@ public class HUD_manager : MonoBehaviour
     private GameObject E_panel;
     [SerializeField]
     private GameObject computer;
+    private bool keep_radar_true;
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log(computer);
         turn_off_all();
         Press_E(false); 
     }
@@ -46,8 +46,12 @@ public class HUD_manager : MonoBehaviour
 
     public void computer_shutdown()
     {
+        if(Radar.object_in_scanner)
+            keep_radar_true = true;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         computer.SetActive(false);
+        if (keep_radar_true)
+            Radar.object_in_scanner = true;
     }
 }

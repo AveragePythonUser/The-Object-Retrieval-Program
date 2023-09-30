@@ -21,12 +21,14 @@ public class Detection : MonoBehaviour
 
     // Objects and Components
     private HUD_manager hud_manager;
+    private Computer computer;
     private Transform orientation;
     private Transform hold_parent;
 
     private bool holding;
     private bool hold_ready;
     private Transform holding_transform;
+    private bool analyze;
     
     // Start is called before the first frame update
     void Start()
@@ -34,6 +36,7 @@ public class Detection : MonoBehaviour
         hud_manager = GameObject.Find("HUD").GetComponent<HUD_manager>();
         orientation = GameObject.Find("Orientation").GetComponent<Transform>();
         hold_parent = GameObject.Find("Holding").GetComponent<Transform>();
+        computer = GameObject.Find("Computer").GetComponent<Computer>();
         holding = false;
         hold_ready = true;
     }
@@ -44,6 +47,11 @@ public class Detection : MonoBehaviour
         if (holding == true)
         {
             holding_object();
+        }
+        if (analyze)
+        {
+            if (Input.GetKeyDown(Key_E))
+                Analyze();
         }
     }
 
@@ -93,8 +101,12 @@ public class Detection : MonoBehaviour
         {
             if (hit.transform.gameObject.CompareTag("Selectable"))
             {
-                //hud_manager.Press_E(true);
-                //Selected(hit);
+                Debug.Log(Radar.object_in_scanner);
+                if((hit.transform.name == "Analyze") && Radar.object_in_scanner)
+                {
+                    hud_manager.Press_E(true);
+                    analyze = true;
+                }
             }
             else if(hit.transform.gameObject.CompareTag("Computer"))
             {
@@ -106,6 +118,7 @@ public class Detection : MonoBehaviour
         else
         {
             hud_manager.Press_E(false);
+            analyze = false;
         }
         Debug.DrawRay(player_camera.position, player_camera.forward * select_distance, Color.yellow);
     }
@@ -125,5 +138,13 @@ public class Detection : MonoBehaviour
             Invoke("hold_cooldown", 0.5f);
         }
 
+    }
+    private void Analyze()
+    {
+        // play sound
+        Computer.object_number += 1;
+        Radar.object_in_scanner = false;
+        computer.move_dot();
+        Debug.Log("hit");
     }
 }
