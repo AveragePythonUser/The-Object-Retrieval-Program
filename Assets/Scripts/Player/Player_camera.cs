@@ -38,4 +38,10 @@ public class Player_camera : MonoBehaviour
         transform.rotation = Quaternion.Euler(rotation_X, rotation_Y, 0);
         orientation.rotation = Quaternion.Euler(0, rotation_Y, 0);
     }
+
+    public void sensitivity_change(float sensitivity)
+    {
+        sensitivity_X = sensitivity * 100f;
+        sensitivity_Y = sensitivity * 100f;
+    }
 }

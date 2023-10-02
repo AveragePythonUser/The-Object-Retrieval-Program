@@ -8,18 +8,18 @@ public class Door : MonoBehaviour
     [SerializeField]
     private GameObject trigger_front;
     [SerializeField]
-    private GameObject trigger_back;
-    [SerializeField]
     private Transform door;
 
     private static bool opening = false;
     private float vel;
     public float smooth_time;
+    private static AudioSource source;
 
     private float slide_z;
-    // Start is called before the first frame update
-
-    // Update is called once per frame
+    void Start()
+    {
+        source = GetComponent<AudioSource>();
+    }
     void Update()
     {
         if(opening == true)
@@ -36,10 +36,12 @@ public class Door : MonoBehaviour
     public static void Open()
     {
         opening = true;
+        source.Play();
     }
 
     public static void Close()
     {
         opening = false;
+        source.Play();
     }
 }

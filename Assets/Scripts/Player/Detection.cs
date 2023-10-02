@@ -1,9 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using TMPro.EditorUtilities;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -29,14 +26,25 @@ public class Detection : MonoBehaviour
     private bool hold_ready;
     private Transform holding_transform;
     private bool analyze;
-    
+    [SerializeField]
+    public GameObject engine;
+    public Engine_fail engine_fail;
+    private AudioSource source;
+
+    private Voice_Lines voice;
+
     // Start is called before the first frame update
     void Start()
     {
         hud_manager = GameObject.Find("HUD").GetComponent<HUD_manager>();
         orientation = GameObject.Find("Orientation").GetComponent<Transform>();
         hold_parent = GameObject.Find("Holding").GetComponent<Transform>();
-        computer = GameObject.Find("Computer").GetComponent<Computer>();
+        computer = GameObject.Find("HUD").GetComponent<Computer>();
+        engine_fail = engine.GetComponent<Engine_fail>();
+        source = GetComponent<AudioSource>();
+
+        voice = GameObject.FindGameObjectWithTag("Voice").GetComponent<Voice_Lines>();
+
         holding = false;
         hold_ready = true;
     }
@@ -44,10 +52,10 @@ public class Detection : MonoBehaviour
     private void Update()
     {
         //check_binds();
-        if (holding == true)
+        /*if (holding == true)
         {
             holding_object();
-        }
+        } */
         if (analyze)
         {
             if (Input.GetKeyDown(Key_E))
@@ -61,7 +69,7 @@ public class Detection : MonoBehaviour
         select_check();
     }
 
-    private void check_binds()
+    /*private void check_binds()
     {
         Ray ray = new Ray(player_camera.position, player_camera.forward);
         RaycastHit hit;
@@ -75,7 +83,7 @@ public class Detection : MonoBehaviour
                 holding_transform.SetParent(null);
             }
         }
-    }
+    } */
 
     private void hold_cooldown()
     {
@@ -102,10 +110,16 @@ public class Detection : MonoBehaviour
             if (hit.transform.gameObject.CompareTag("Selectable"))
             {
                 Debug.Log(Radar.object_in_scanner);
-                if((hit.transform.name == "Analyze") && Radar.object_in_scanner)
+                if ((hit.transform.name == "Analyze") && Radar.object_in_scanner)
                 {
                     hud_manager.Press_E(true);
                     analyze = true;
+                }
+                else if (hit.transform.name == "Engine Reset" && Game_Events.engine_failure == true)
+                {
+                    hud_manager.Press_E(true);
+                    if (Input.GetKey(Key_E))
+                        engine_fail.Stop_engine();
                 }
             }
             else if(hit.transform.gameObject.CompareTag("Computer"))
@@ -123,7 +137,7 @@ public class Detection : MonoBehaviour
         Debug.DrawRay(player_camera.position, player_camera.forward * select_distance, Color.yellow);
     }
 
-    private void Selected(RaycastHit hit)
+    /*private void Selected(RaycastHit hit)
     {
         if ((Input.GetKey(Key_E) && holding == false) && hold_ready == true)
         {
@@ -138,13 +152,19 @@ public class Detection : MonoBehaviour
             Invoke("hold_cooldown", 0.5f);
         }
 
-    }
+    } */
     private void Analyze()
     {
         // play sound
-        Computer.object_number += 1;
+
+        if (Game_Events.tutorial)
+            voice.play_clip("4");
+
+        Game_Events.object_number += 1;
         Radar.object_in_scanner = false;
         computer.move_dot();
+        hud_manager.Press_E(false);
+        source.Play();
         Debug.Log("hit");
     }
 }

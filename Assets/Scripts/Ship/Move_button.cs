@@ -22,7 +22,7 @@ public class Move_button : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (is_pressed)
+        if (is_pressed && Game_Events.can_move)
         {
             if (gameObject.name == "Up")
             {
